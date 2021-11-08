@@ -1,7 +1,8 @@
-package com.edu.glob.pokeapp
+package com.edu.glob.pokeapp.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.edu.glob.pokeapp.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
