@@ -37,7 +37,10 @@ class MainActivity : AppCompatActivity() {
     private fun observeViewModel() {
         viewModel.pokemons.observe(this, Observer {
             pokemons -> pokemons?.let {
-                pokemonAdapter.updatePokemon(it) }
+
+                pokemonAdapter.updatePokemon(it)
+                binding.pokemonList.visibility = View.VISIBLE
+            }
         })
 
         viewModel.pokemonLoadError.observe(this, Observer {
