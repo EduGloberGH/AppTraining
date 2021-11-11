@@ -2,6 +2,7 @@ package com.edu.glob.pokeapp.model
 
 import com.edu.glob.pokeapp.Pokemon
 import com.edu.glob.pokeapp.PokemonResponse
+import com.edu.glob.pokeapp.SinglePokemonResponse
 import io.reactivex.Single
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -22,6 +23,10 @@ class PokemonsService {
     }
 
     fun getPokemons(): Single<PokemonResponse>{
-        return api.getPokemons(20,0)
+        return api.getPokemons(10,0)
+    }
+
+    fun getSinglePokemon(id : Int): Single<SinglePokemonResponse>{
+        return  api.getSinglePokemon(id)
     }
 }

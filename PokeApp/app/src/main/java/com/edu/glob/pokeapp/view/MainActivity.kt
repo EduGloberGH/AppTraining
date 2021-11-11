@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.edu.glob.pokeapp.R
 import com.edu.glob.pokeapp.databinding.ActivityMainBinding
 import com.edu.glob.pokeapp.viewmodel.ListViewModel
@@ -27,8 +29,13 @@ class MainActivity : AppCompatActivity() {
         viewModel.refresh()
 
         binding.pokemonList.apply {
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = GridLayoutManager(context, 2)
             adapter = pokemonAdapter
+        }
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            binding.swipeRefreshLayout.isRefreshing = false
+            viewModel.refresh()
         }
 
         observeViewModel()

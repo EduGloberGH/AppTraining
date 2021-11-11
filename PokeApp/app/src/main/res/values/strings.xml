@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">PokeApp</string>
     <string name="error_text">An error occured while loading data.</string>
+    <string name="statistics">Base Stats</string>
 </resources>
