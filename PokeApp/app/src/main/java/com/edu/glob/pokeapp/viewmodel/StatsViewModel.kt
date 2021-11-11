@@ -3,16 +3,23 @@ package com.edu.glob.pokeapp.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.edu.glob.pokeapp.SinglePokemonResponse
+import com.edu.glob.pokeapp.di.DaggerApiComponent
 import com.edu.glob.pokeapp.model.PokemonsService
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
 class StatsViewModel: ViewModel() {
 
-    private val pokemonService = PokemonsService()
-    private val disposable = CompositeDisposable()
+    @Inject
+    lateinit var pokemonService: PokemonsService
+    @Inject
+    lateinit var disposable: CompositeDisposable
+    init {
+        DaggerApiComponent.create().Inject(this)
+    }
 
     //liveData
     val details = MutableLiveData<SinglePokemonResponse>()
