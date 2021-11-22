@@ -2,8 +2,7 @@ package com.edu.glob.pokeapp.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.edu.glob.pokeapp.Pokemon
-import com.edu.glob.pokeapp.PokemonResponse
+import com.edu.glob.pokeapp.SinglePokemonResponse
 import com.edu.glob.pokeapp.di.DaggerApiComponent
 import com.edu.glob.pokeapp.model.PokemonsService
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -12,43 +11,42 @@ import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class ListViewModel : ViewModel() {
+class StatsViewModel: ViewModel() {
 
     @Inject
-    lateinit var pokemonsService: PokemonsService
+    lateinit var pokemonService: PokemonsService
     @Inject
     lateinit var disposable: CompositeDisposable
     init {
-        DaggerApiComponent.create().inject(this)
+        DaggerApiComponent.create().Inject(this)
     }
 
-
-    //livedata
-    val pokemons = MutableLiveData<List<Pokemon>>()
-    val pokemonLoadError = MutableLiveData<Boolean>()
+    //liveData
+    val details = MutableLiveData<SinglePokemonResponse>()
+    val detailsLoadError = MutableLiveData<Boolean>()
     val loading = MutableLiveData<Boolean>()
 
-    fun refresh() {
-        fetchPokemons()
+    fun refresh(id: Int)
+    {
+        fetchDetails(id)
     }
 
-    //evade of showing the actual method
-    private fun fetchPokemons() {
+    private fun fetchDetails(id: Int) {
         loading.value = true
         disposable.add(
-            pokemonsService.getPokemons()
+            pokemonService.getSinglePokemon(id)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSingleObserver<PokemonResponse>() {
-                    override fun onSuccess(value: PokemonResponse) {
-                        pokemons.value = value.results
-                        pokemonLoadError.value = false
+                .subscribeWith(object: DisposableSingleObserver<SinglePokemonResponse>(){
+                    override fun onSuccess(t: SinglePokemonResponse) {
+                        details.value = t
+                        detailsLoadError.value = false
                         loading.value = false
                     }
 
                     override fun onError(e: Throwable) {
-                        pokemonLoadError.value = true
                         loading.value = false
+                        detailsLoadError.value = false
                     }
 
                 })
@@ -59,4 +57,5 @@ class ListViewModel : ViewModel() {
         super.onCleared()
         disposable.clear()
     }
+
 }
